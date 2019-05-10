@@ -1,0 +1,30 @@
+/*设置弹出层窗口的大小*/
+#divLoginWindow {
+	display: none;
+	position: absolute;
+	width: 600px;
+	border: #4C8DDC solid 1px;
+	z-index: 200;
+	background: #fff;
+	padding-bottom:20px;
+}
+/*设置弹出层窗口的大小*/
+#divEditWindow {
+	display: none;
+	position: absolute;
+	width: 600px;
+	border: #4C8DDC solid 1px;
+	z-index: 200;
+	background: #fff;
+	padding-bottom:20px;
+}
+/***遮罩层****/
+#grey {
+	background: #000;
+	display: block;
+	z-index: 100;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}

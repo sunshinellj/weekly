@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.caitc.weekly.dao.DeptListDao">
+
+	<!-- 数据取得-->
+	<select id="selectDeptList" parameterType="DeptList" resultType="DeptList">
+		SELECT
+		  group_id   AS groupId,
+		  group_name AS groupName
+		FROM t_group
+	</select>
+
+	<!-- 数据取得-->
+	<select id="selectById" parameterType="String" resultType="String">
+	    SELECT group_name AS groupName
+		FROM t_group
+		WHERE group_id = #{groupId}
+	</select>
+          
+</mapper>

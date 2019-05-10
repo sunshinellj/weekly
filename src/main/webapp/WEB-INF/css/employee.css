@@ -1,0 +1,56 @@
+
+h2 {
+    margin: 0;
+    padding: 0;
+}
+
+#employeeList td {
+    text-align: center;
+}
+input[type=text] {
+    width: 80%;
+}
+
+#divLoginWindow input[type=text] {
+    width: 40%;
+}
+
+select {
+    width: 80%;
+}
+
+#selectTable {
+    width: 1000px;
+    margin-left: 280px;
+}
+
+#btnReport {
+    margin-top: 20px;
+}
+
+/*设置弹出层窗口的大小*/
+#divLoginWindow {
+    display: none;
+    position: absolute;
+    width: 350px;
+    border: #4C8DDC solid 1px;
+    z-index: 200;
+    background: #fff;
+    padding-bottom: 20px;
+}
+
+/***遮罩层****/
+#grey {
+    background: #000;
+    display: block;
+    z-index: 100;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#divLoginWindow label {
+    font-size: 10px;
+    color:red;
+}

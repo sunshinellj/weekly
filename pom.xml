@@ -1,0 +1,253 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>cn.caitc</groupId>
+  <artifactId>weekly</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>weekly Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+    <properties>  
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+        <springversion>3.1.1.RELEASE</springversion>  
+        <junitversion>3.8.1</junitversion>  
+        <project.comlib.path>${basedir}\src\main\webapp\common-lib\</project.comlib.path>
+    </properties>  
+    
+  <dependencies>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+ <!--     <scope>test</scope>-->
+    </dependency>
+	<dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-aop</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-asm</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-aspects</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-beans</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-context</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-context-support</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-core</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-expression</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-jdbc</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-jms</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-orm</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-oxm</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-tx</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-web</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-webmvc</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-test</artifactId>  
+        <version>${springversion}</version>  
+        <type>jar</type>  
+        <scope>compile</scope>  
+    </dependency>  
+
+    <dependency>  
+        <groupId>javax.servlet</groupId>  
+        <artifactId>jstl</artifactId>  
+        <version>1.2</version>  
+        <scope>runtime</scope>  
+    </dependency>  
+	
+	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>2.4</version>
+	</dependency>
+	
+    <dependency>  
+        <groupId>commons-collections</groupId>  
+        <artifactId>commons-collections</artifactId>  
+        <version>3.1</version>  
+    </dependency>
+
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>1.6.3</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+          <version>1.6.3</version>
+      </dependency>
+
+    <dependency>  
+        <groupId>commons-logging</groupId>  
+        <artifactId>commons-logging</artifactId>  
+        <version>1.1</version>  
+    </dependency>     
+    
+  	<!-- mybatis核心包 -->
+    <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>3.2.4</version>
+    </dependency>
+    <!-- mybatis/spring包 -->
+    <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis-spring</artifactId>
+        <version>1.2.2</version>
+    </dependency>
+    <!-- mysql驱动包 -->
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.29</version>
+    </dependency>
+    
+    <!-- oracle -->
+   	<dependency>
+		<groupId>cn.caitc</groupId>
+		<artifactId>ojdbc6</artifactId>
+		<version>0.0</version>
+		<scope>system</scope>
+		<systemPath>${project.comlib.path}/ojdbc6.jar</systemPath>
+	</dependency>
+	
+	<!-- poi -->
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi</artifactId>
+		<version>3.9</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-scratchpad</artifactId>
+		<version>3.9</version>
+	</dependency>
+
+	 <!-- upload -->
+     <dependency> 
+        <groupId>commons-fileupload</groupId> 
+        <artifactId>commons-fileupload</artifactId> 
+        <version>1.2.2</version> 
+    </dependency> 
+    
+	<dependency>  
+	       <groupId>org.aspectj</groupId >  
+	       <artifactId>aspectjweaver</artifactId >  
+	       <version> 1.6.11</version >  
+	</dependency>      
+    
+  </dependencies>
+  <build>
+    <finalName>weekly</finalName>
+        <plugins>  
+        <plugin>  
+            <groupId>org.mortbay.jetty</groupId>  
+            <artifactId>jetty-maven-plugin</artifactId>  
+            <version>8.1.8.v20121106</version>  
+            <configuration>  
+                <reload>manual</reload>  
+                <webAppConfig>  
+                    <contextPath>/${project.build.finalName}</contextPath>  
+                </webAppConfig>  
+                <connectors>  
+                    <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">  
+                        <port>9080</port>  
+                        <!--<maxIdleTime>60000</maxIdleTime>-->  
+                    </connector>  
+                </connectors>  
+            </configuration>  
+        </plugin>  
+    </plugins>  
+</build>  
+</project>

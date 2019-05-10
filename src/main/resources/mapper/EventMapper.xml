@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.caitc.weekly.dao.EventDao">
+	  <select id="selectEventList" parameterType="Event" resultType="Event">
+	    select te.begin_date as beginDate
+	          ,te.end_date as endDate
+	          ,te.t_comment as commentValue
+	     from  t_event te	  
+	  </select>
+	  <select id="selectByStartDate" parameterType="Event" resultType="java.lang.Integer">
+	    select nvl(count(*),0) eventCount
+	     from  t_event te	 
+	     <![CDATA[
+	    where  te.begin_date = to_date(to_char(#{beginDate},'yyyymmdd'),'yyyymmdd')
+	    ]]>
+	  </select>
+	  <insert id="insertEvent" parameterType="Event">
+		insert into t_event te
+		(begin_date
+		,te.end_date
+		,te.t_comment) 
+		values(#{beginDate},#{endDate},#{commentValue})
+	</insert>
+	<delete id="deleteEvent">
+		delete from t_event te
+		  where te.begin_date = #{beginDate}
+	</delete>
+</mapper>

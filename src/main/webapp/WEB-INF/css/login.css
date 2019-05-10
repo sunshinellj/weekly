@@ -1,0 +1,25 @@
+#sysName {
+	width: 200px;
+	margin-top: 10%;
+	margin-left: 45.5%;
+}
+#login {
+	height: 60px;
+	margin-left: 40%;
+	margin-top: 80px;
+}
+
+#log {
+	right: 20px;
+	bottom: 0;
+}
+
+#msg{
+	margin-top:10%;
+	text-align:center;
+}
+
+.button{
+	margin-left:270px;
+	text-align:center;
+}

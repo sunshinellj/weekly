@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.caitc.weekly.dao.InitDateDao">
+	<select id="selectCountIssue" parameterType="InitDate" resultType="java.lang.Integer">
+		select nvl(max(ti.issue),0) as countWeek
+		  from t_initdate ti
+		 where ti.year = #{year}
+		   and ti.month = #{month}
+	</select>
+	
+	<select id="selectTimeZone" parameterType="InitDate" resultType="InitDate">
+		select ti.begin_date as startDate
+			 , ti.end_date as endDate
+		  from t_initdate ti
+		 where ti.year = #{year}
+		   and ti.month = #{month}
+		   and ti.issue = #{issue}
+	</select>
+	<select id="selectByBeginDate" parameterType="InitDate" resultType="InitDate">
+		select ti.begin_date as startDate
+				,ti.year
+		      ,ti.month
+		      ,ti.issue
+		  from t_initdate ti
+		  <![CDATA[
+		 where ti.begin_date=to_date(to_char(#{startDate},'yyyymmdd'),'yyyymmdd')
+		 ]]>
+	</select>
+	<update id="updateEndDate">
+	  merge into t_initdate t1
+			   using (SELECT begin_date
+			               , end_date
+			               , t_comment 
+			            FROM t_event) t2
+				  on (t1.begin_date = t2.begin_date)
+   when matched then 
+              update 
+		         set t1.end_date = t2.end_date
+		            ,t1.t_comment = t2.t_comment
+	</update>
+	
+	<update id="updateIssue" parameterType="InitDate">
+		update t_initdate ti
+		   set ti.issue= #{issue}-1
+	     where ti.year= #{year}
+	       and ti.month=#{month}
+	       and ti.issue=#{issue}
+	
+	</update>
+	<update id="updateByStartDate"  parameterType="InitDate">
+		update t_initdate ti
+		   set ti.end_date= #{endDate}
+		   		,ti.t_comment=#{commentValue}
+	     <![CDATA[
+		 where ti.begin_date=to_date(to_char(#{startDate},'yyyymmdd'),'yyyymmdd')
+		 ]]>
+	</update>
+	<insert id="insertInitDate"  parameterType="InitDate">
+		insert into t_initdate ti
+					  (ti.begin_date
+					   ,ti.end_date
+					   ,ti.year
+					   ,ti.month
+					   ,ti.issue)
+				values(to_date(to_char(#{startDate},'yyyymmdd'),'yyyymmdd'),to_date(to_char(#{endDate},'yyyymmdd'),'yyyymmdd'),#{year},#{month},#{issue})
+
+
+	</insert>
+	<delete id="deleteEvent" parameterType="InitDate">
+		delete t_initdate ti
+		 where ti.year= #{year}
+	       and ti.month=#{month}
+	       and ti.issue=#{issue}	
+	</delete>
+	<update id="updateDeleteIssue" parameterType="InitDate">
+		update t_initdate ti
+		set ti.issue= #{issue}
+		<![CDATA[
+		 where ti.begin_date=to_date(to_char(#{startDate},'yyyymmdd'),'yyyymmdd')
+		 ]]>
+
+	</update>
+	<select id="selectYearMonthIssueByDate" parameterType="InitDate" resultType="InitDate">
+		select ti.year as year 
+			  ,ti.month as month
+		      ,ti.issue as issue
+		 from  t_initdate ti
+		 <![CDATA[
+		where ti.begin_date <= to_date(to_char(#{date},'yyyymmdd'),'yyyymmdd')
+		  and ti.end_date >= to_date(to_char(#{date},'yyyymmdd'),'yyyymmdd')
+		  ]]>
+	</select>
+</mapper>

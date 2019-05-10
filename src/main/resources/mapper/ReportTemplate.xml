@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.caitc.weekly.dao.ReportTemplateDao">
+
+	<select id="selectTempPart" parameterType="ReportTemplate"
+		resultType="ReportTemplate">
+		select distinct t.part_id partId
+			 , t.part_name partName
+			 ,t.version_no versionNo
+		from t_template t
+		where t.group_id = #{groupId}
+		  and t.version_no 
+		 = (select max(tt.version_no)
+		      from t_template tt
+		     where tt.group_id = #{groupId}) order by t.part_id
+
+	</select>
+	
+	<select id="selectTempPoint" parameterType="ReportTemplate"
+		resultType="ReportTemplate">
+		select t.part_id partId
+			  ,t.point_id pointId
+			  ,to_number(substr(t.point_id,3)) ppointId
+			  ,t.point_name pointName
+			  ,t.version_no versionNo
+		from t_template t
+		where t.group_id = #{groupId}
+		  and t.point_id is not null
+		  and t.version_no 
+		 = (select max(tt.version_no)
+		      from t_template tt
+		     where tt.group_id = #{groupId}) order by partId,ppointId
+		     
+	</select>
+	
+	<select id="selectTempPartNoPoint" parameterType="ReportTemplate"
+		resultType="ReportTemplate">
+		select distinct t.part_id partId
+		     , t.part_name partName
+		     , t.version_no versionNo
+ 		  from t_template t
+         where t.group_id = #{groupId}
+           and t.version_no = (select max(tt.version_no)
+                                 from t_template tt
+                                where tt.group_id = #{groupId})
+          and t.part_id not in (select t.part_id
+                                  from t_template t
+						         where t.group_id = #{groupId}
+						           and t.point_id is not null
+						           and t.version_no = (select max(tt.version_no)
+						                                 from t_template tt
+						                                where tt.group_id = #{groupId}))
+ 		 order by t.part_id
+
+	</select>
+	
+	<select id="selectTempPartByFileNo" parameterType="ReportTemplate"
+		resultType="ReportTemplate">
+	select distinct tt.part_id partId
+	      ,tt.part_name partName
+	      ,tf.version_no versionNo
+	 from  t_content tc
+	      ,t_file tf
+	      ,t_template tt
+	where tc.file_no = tf.file_no
+	  and tf.group_id = tt.group_id
+	  and tf.version_no = tt.version_no
+	  and tc.file_no=#{fileNo}
+ order by tt.part_id
+    </select>
+	<select id="selectTempPointByFileNo" parameterType="ReportTemplate"
+		resultType="ReportTemplate">
+		select distinct  tt.point_id pointId
+		      ,tt.point_name pointName
+		      ,tt.part_id partId
+			  ,tt.part_name partName
+			  ,tf.year year
+	          ,tf.month month
+	          ,tf.issue issue
+	          ,tf.report_time rptTime
+	          ,tf.version_no versionNo
+		 from  t_content tc
+		      ,t_file tf
+		      ,t_template tt
+		where tc.file_no = tf.file_no
+		  and tf.group_id = tt.group_id
+		  and tf.version_no = tt.version_no
+		  and tc.file_no=#{fileNo}
+		  and tt.point_id is not null
+	 order by tt.part_id,to_number(substr(tt.point_id, 3))
+	 </select>
+	
+	<select id="selectTempPartNoPointByFileNo" parameterType="ReportTemplate"
+		resultType="ReportTemplate">
+		select tc.part_id partId
+		  from t_content tc
+		 where tc.point_id is null
+		   and tc.file_no = #{fileNo}
+
+	</select>
+	
+	<select id="selectVersionNo" parameterType="String" resultType="int">
+		select nvl(max(t.version_no),0) 
+		   from t_template t
+		   where t.group_id = #{groupId}
+
+	</select>
+	<update id="updateTemplatePart" parameterType="ReportTemplate">
+		update t_template tt
+		   set tt.part_name= #{partName}
+		   	   ,tt.update_user =#{updateUser}
+		   	   ,tt.update_date =#{updateDate}		      
+		 where tt.group_id =#{groupId}
+		   and tt.part_id =#{partId}
+		   and tt.version_no= 
+		   (select max(t.version_no)
+		      from t_template t
+		     where t.group_id = #{groupId})
+    </update>
+    
+    <update id="updateTemplatePoint" parameterType="ReportTemplate">
+		update t_template tt
+		   set tt.point_name = #{pointName}
+		   	   ,tt.update_user =#{updateUser}
+		   	   ,tt.update_date =#{updateDate}
+		 where tt.group_id =#{groupId}
+		   and tt.point_id = #{pointId}
+		   and tt.version_no = 
+		   (select max(t.version_no)
+		      from t_template t
+		     where t.group_id = #{groupId})
+    </update>
+	
+	<insert id="insertTemplate" parameterType="ReportTemplate">
+		insert into t_template tt
+		(tt.template_id
+		,tt.part_id
+		,tt.part_name
+		,tt.point_id
+		,tt.point_name
+		,tt.group_id
+		,tt.version_no
+		,tt.insert_user
+		,tt.insert_date
+		,tt.template_name) 
+		values(#{tempId},#{partId},#{partName},#{pointId},#{pointName},#{groupId},#{versionNo},#{insertUser},#{insertDate},#{tempName})
+	</insert>
+
+	<!--添加模板文件-->
+	<insert id="insertTempFile" parameterType="ReportTemplate">
+		INSERT INTO T_TEMPFILE
+		(groupId,versionNo,tmp_file)
+		VALUES
+		(#{groupId},${versionNo}, #{tmpFile,jdbcType=BLOB}) --此处需要加上jdbcType=BLOB
+	</insert>
+
+	<!--从数据库中读取blob模板文件-->
+	<select id="selectTempFile"  parameterType="ReportTemplate" resultType="ReportTemplate">
+		select t.groupid as groupId,
+		t.versionno as versionNo,
+		t.tmp_file as tmpFile
+		from T_TEMPFILE t
+		where t.groupid=#{groupId}
+		and t.versionno=#{versionNo}
+	</select>
+</mapper>

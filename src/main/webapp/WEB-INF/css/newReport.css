@@ -1,0 +1,60 @@
+
+#timeZone {
+	color: blue;
+	font-weight: bold;
+}
+
+
+.button {
+	width: 45px;
+}
+
+.txt1 {
+	width: 95%;
+}
+
+#innerBox {
+	margin: 20px;
+}
+
+#outerBox {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	width: 55%;
+	padding:0px;
+	margin:0px;
+}
+
+.text {
+	display: block;
+}
+
+select {
+	width: 12%;
+	!important
+}
+
+.add1 img,.remove1 img {
+	width: 70%;
+}
+
+.left {
+	display: inline-block;
+	width: 20px;
+}
+
+hr {
+	margin:0px;
+	padding:0px;
+	width: 100%;
+	height:1px;
+	border: none;
+	border-top: 1px solid #000000;
+	
+}
+#timeBottom {
+	text-align: right;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}

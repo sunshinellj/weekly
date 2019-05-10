@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd   
+        http://www.springframework.org/schema/mvc   
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+    <context:component-scan base-package="cn.caitc.weekly.controller"></context:component-scan>
+
+    <!-- <context:component-scan base-package="cn.caitc.weekly.dao,cn.caitc.weekly.service" />   -->
+
+    <mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
+    <mvc:resources location="/WEB-INF/images/" mapping="/images/**"/>
+    <mvc:resources location="/WEB-INF/css/" mapping="/css/**"/>
+
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <mvc:interceptors>
+        <!-- session超时 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/*"/>
+            <bean class="cn.caitc.weekly.interceptor.SessionTimeoutInterceptor">
+                <property name="excludedUrls">
+                    <list>
+                        <!-- 如果请求中包含以下路径，则不进行拦截 -->
+                        <value>/login</value>
+                        <value>/hello</value>
+                        <value>/js</value>
+                        <value>/css</value>
+                        <value>/image</value>
+                        <value>/images</value>
+                    </list>
+                </property>
+                <property name="loginUrl">
+                    <value>/login</value>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="cn.caitc.weekly.interceptor.SessionTimeoutException">redirect:/login</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/views"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="defaultEncoding" value="iso-8859-1"/>
+        <property name="useCodeAsDefaultMessage" value="true"/>
+        <property name="cacheSeconds" value="10"></property>
+        <property name="basenames">
+            <list>
+                <value>classpath:messages/messages</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    </bean>
+
+
+</beans> 

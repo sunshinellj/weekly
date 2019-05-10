@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.caitc.weekly.dao.UserInfoDao">
+    <!-- 简单的查询用户信息（用户登录页面）-->
+	<select id="selectUserInfo" parameterType="UserInfo" resultType="UserInfo">
+		SELECT
+		USER_ID       AS userId,
+		USER_NAME     AS userName,
+		tu.GROUP_ID   AS groupId,
+		tg.group_name AS groupName,
+		ORDER_NO      AS orderNo,
+		AUTHORITY     AS authority
+		FROM T_USER tu,T_group tg
+		WHERE  tu.group_id=tg.group_id
+			<if test="userId != ''">
+				AND USER_ID = #{userId}
+			</if>
+		ORDER BY tu.user_id
+	</select>
+
+	<!---查询页面-->
+	<select id="selectUserInfoBySearch" parameterType="UserInfo" resultType="UserInfo">
+		SELECT
+		USER_ID       AS userId,
+		USER_NAME     AS userName,
+		tu.GROUP_ID   AS groupId,
+		tg.group_name AS groupName,
+		ORDER_NO      AS orderNo,
+		AUTHORITY     AS authority
+		FROM T_USER tu, T_group tg
+		WHERE tu.group_id = tg.group_id
+		<if test="userId != '' and userId!=null">
+			and USER_ID = #{userId}
+		</if>
+		<if test="userName !=''and userName!=null">
+			and USER_NAME = #{userName}
+		</if>
+		<if test="groupId!=''  and groupId!=null">
+			and tg.group_id = #{groupId}
+		</if>
+		order by tu.user_id
+	</select>
+
+	<!--新增后保存-->
+	<insert id="insertUser" parameterType="UserInfo">
+		INSERT INTO t_user tu (
+						 tu.user_id
+						,tu.user_name
+						,tu.group_id
+						,tu.order_no
+						,tu.authority
+						,tu.insert_user
+						,tu.insert_date)
+		VALUES(#{userId},#{userName},#{groupId},#{orderNo},#{authority},#{inserterId},#{insertTime})
+
+	</insert>
+
+	<!--更新-->
+	<update id="updateUser" parameterType="UserInfo">
+		UPDATE t_user tu
+			SET tu.user_name = #{userName}
+			  , tu.group_id = #{groupId}
+			  , tu.authority = #{authority}
+			  , tu.update_user = #{updaterId}
+			  , tu.update_date = #{updateTime}
+		WHERE tu.user_id = #{userId}
+	</update>
+
+	<!--删除员工-->
+	<delete id="deleteUser" parameterType="UserInfo">
+		delete from t_user tu
+			   where tu.user_id = #{userId}
+	</delete>
+
+	<!--查询指定部门员工的最大orderNo-->
+	<select id="selectMaxOrder" parameterType="UserInfo" resultType="UserInfo">
+		select max(tu.order_no) orderNo
+		  from t_user tu
+		 where tu.group_id = #{groupId}
+	</select>
+</mapper>

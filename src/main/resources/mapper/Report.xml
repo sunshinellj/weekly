@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.caitc.weekly.dao.ReportDao">
+
+	<insert id="insertContent" parameterType="Report">
+		INSERT INTO t_content t
+					 (t.CONTENT_ID,
+					  t.file_no,
+					  t.part_id,
+					  t.point_id,
+				 	  t.work_note,
+					  t.insert_user,
+					  t.insert_date)
+		VALUES(#{contentId},#{fileNo},#{partId},#{pointId},#{workNote},#{insertUser},#{insertDate})
+		<selectKey resultType="java.lang.Integer"  keyProperty="contentId" order="BEFORE">
+   			 SELECT SEQUENCE_CONTENT_ID.NEXTVAL contentId
+			 FROM dual
+  		</selectKey>
+	</insert>
+
+	<select id="selectReportContent" parameterType="Report"
+		resultType="Report">
+		SELECT tc.work_note workNote
+		     , tc.part_id partId
+		     , tc.point_id pointId
+		 FROM t_content tc
+	 	WHERE tc.file_no = #{fileNo}
+	 	  AND tc.point_id IS NOT NULL
+	ORDER BY tc.part_id, tc.point_id
+	</select>
+	
+	<select id="selectContentNoPoint" parameterType="Report"
+		resultType="Report">
+		SELECT tc.file_no fileNo
+		     , tc.part_id partId
+		     , tc.work_note workNote
+		  FROM t_content tc
+		 WHERE tc.point_id is null
+	   	   AND tc.file_no = #{fileNo}
+	</select>
+	
+    <update id="updateContent" parameterType="Report">
+		UPDATE t_content tc
+		   SET tc.work_note = #{workNote}
+		      ,tc.update_user = #{updateUser}
+		      ,tc.update_time = #{updateDate}
+		 WHERE tc.file_no = #{fileNo}
+		   AND tc.point_id = #{pointId}
+    </update>
+    
+    <update id="updateContentNoPoint" parameterType="Report">
+		UPDATE t_content tc
+		   SET tc.work_note = #{workNote}
+		      ,tc.update_user = #{updateUser}
+		      ,tc.update_time = #{updateDate}
+		 WHERE tc.file_no = #{fileNo}
+		   AND tc.part_id = #{partId}
+    </update>
+    
+    <delete id="deleteContent" parameterType="Report">
+	      DELETE FROM t_content t
+	      WHERE t.file_no = #{fileNo}
+    </delete>
+
+</mapper>

@@ -1,0 +1,44 @@
+ul {
+	list-style: none;
+}
+
+.button {
+	width: 45px;
+}
+
+input[type=text] {
+	width: 100%;
+}
+
+#innerBox {
+	margin: 20px;
+}
+
+#outerBox {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	width: 40%;
+}
+#file {
+	width: 226px;
+	height: 25px;
+	position: relative;
+}
+
+#filetxt {
+	
+}
+
+#filebtn {
+	position: absolute;
+}
+
+#myfile {
+	width: 60.67px;
+	height:28px;
+	position: absolute;
+	right: 0px;
+	left:242px;
+	top: 0px;
+	opacity: 0;

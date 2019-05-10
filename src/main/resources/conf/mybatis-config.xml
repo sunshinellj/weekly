@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+        <!-- 命名空间 -->
+    <typeAliases>
+         <typeAlias alias="User" type="cn.caitc.weekly.model.User"/>
+         <typeAlias alias="ReportList" type="cn.caitc.weekly.model.ReportList"/>
+         <typeAlias alias="UserInfo" type="cn.caitc.weekly.model.UserInfo"/>
+         <typeAlias alias="DeptList" type="cn.caitc.weekly.model.DeptList"/>
+         <typeAlias alias="ReportTemplate" type="cn.caitc.weekly.model.ReportTemplate"/>
+         <typeAlias alias="Report" type="cn.caitc.weekly.model.Report"/>
+         <typeAlias alias="InitDate" type="cn.caitc.weekly.model.InitDate" />
+		 <typeAlias alias="Event" type="cn.caitc.weekly.model.Event" />
+    </typeAliases>
+ 
+    <!-- 映射map -->
+    <mappers>
+    </mappers>
+</configuration>

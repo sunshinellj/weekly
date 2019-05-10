@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.caitc.weekly.dao.ReportListDao">
+
+	<select id="doSelectReportList" parameterType="ReportList"
+		resultType="ReportList">
+		SELECT
+		file_no     AS fileNo,
+		file_name   AS fileName,
+		group_name  AS groupName,
+		user_name   AS reporter,
+		report_time AS reportTime
+		FROM t_file tf
+		, t_group tg
+		, t_user tu
+		, t_initdate ti
+		WHERE tf.group_id = tg.group_id
+		AND tf.reporter_id = tu.user_id
+		AND tf.group_id = #{groupId}
+		AND ti.year = tf.year
+		AND ti.month = tf.month
+		AND ti.issue = tf.issue
+		<if test="startDate != null">
+			<![CDATA[
+			AND ti.begin_date >= to_date(to_char(#{startDate},'yyyymmdd'),'yyyymmdd')
+			]]>
+		</if>
+		<if test="endDate != null">
+	       <![CDATA[
+	       AND ti.begin_date <= to_date(to_char(#{endDate},'yyyymmdd'),'yyyymmdd')
+	       ]]>
+		</if>
+		<if test="reporter != '' and reporter !=null">
+			AND tu.user_name = #{reporter}
+		</if>
+		<if test="reporterId != '' and reporterId!=null">
+			AND tu.user_id = #{reporterId}
+		</if>
+		order by tu.order_no,tu.user_id,tg.group_id,ti.year desc,ti.month desc,ti.issue desc
+	</select>
+
+	<delete id="deleteReport" parameterType="ReportList">
+		DELETE FROM t_file t
+		WHERE t.file_no = #{fileNo}
+	</delete>
+
+	<insert id="insertFile" parameterType="ReportList">
+		INSERT INTO t_file
+		(
+		  file_no,
+		  file_name,
+		  reporter_id,
+		  report_time,
+		  group_id,
+		  creater,
+		  create_time,
+		  insert_user,
+		  insert_date,
+		  year,
+		  month,
+		  issue,
+		  version_no)
+		VALUES (
+		  #{fileNo}, #{fileName}, #{reporterId}, #{reportTime}, #{groupId},
+		  #{reporterId}, #{reportTime}, #{reporterId}, #{reportTime},
+		  #{year}, #{month}, #{issue}, #{versionNo})
+	</insert>
+	
+	<update id="updateFile" parameterType="ReportList">
+		UPDATE t_file tf
+		   SET tf.update_user = #{updateUser}
+		      ,tf.insert_date = #{updateDate}
+		 WHERE tf.file_no = #{fileNo}
+	</update>
+	
+	<select id="isHave" parameterType="ReportList" resultType="ReportList">
+	SELECT t.file_no fileNo
+	  FROM t_file t
+	 WHERE t.reporter_id = #{reporterId}
+	   AND t.year = #{year}
+	   AND t.month = #{month}
+	   AND t.issue = #{issue}
+    </select>
+    
+    <select id="sortFileNo" parameterType="java.util.List" resultType="ReportList">
+    SELECT DISTINCT tf.file_no fileNo
+          ,tu.order_no orderNo
+          ,tt.template_name tempName
+          ,tt.group_id||''||tt.version_no tempId
+          ,tf.year year
+          ,tf.month month
+          ,tf.issue issue
+          ,tf.version_no versionNo
+     FROM t_file tf
+         ,t_user tu
+         ,t_template tt
+   WHERE tf.reporter_id = tu.user_id
+     AND tf.group_id = tt.group_id
+     AND tf.version_no = tt.version_no
+     AND tf.file_no IN
+	    <foreach collection="list" index="index" item="fileNo" open="(" separator="," close=")">  
+            #{fileNo}   
+    	</foreach>  
+  ORDER BY tu.order_no
+    </select>
+    
+    <select id="reportCount" parameterType="ReportList" resultType="java.lang.Integer">
+	SELECT nvl(count(*),0) reportCount
+	  FROM t_file t
+	 WHERE t.reporter_id = #{reporterId}
+	   <![CDATA[
+	   AND to_number(t.year || t.month || t.issue) < #{rptTime}
+	    ]]>
+    </select>
+</mapper>
